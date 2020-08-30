@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import CompanySearch.CalculatorContains;
 import CompanySearch.CalculatorEqual;
 import CompanySearch.CalculatorInequal;
 import CompanySearch.LinkerAnd;
@@ -22,7 +23,7 @@ public class SqlTest {
 		SS.putRequest(linkerAnd);
 		CalculatorInequal calculatorInequal = new CalculatorInequal("Location", "秦淮区");
 		SS.putRequest(calculatorInequal);
-		assertEquals("GenSql", "Select * from Company_table where CompanyName=华泰证券 and Location<>秦淮区", SS.getSqlSentence());
+		assertEquals("GenSql", "Select * from Company_table where CompanyName='华泰证券' and Location<>'秦淮区'", SS.getSqlSentence());
 	}
 	
 	@Test
@@ -34,7 +35,7 @@ public class SqlTest {
 		SS.putRequest(linkerOr);
 		CalculatorInequal calculatorInequal = new CalculatorInequal("Location", "建邺区");
 		SS.putRequest(calculatorInequal);
-		assertEquals("GenSql", "Select * from Company_table where CompanyName=华泰证券 or Location<>建邺区", SS.getSqlSentence());
+		assertEquals("GenSql", "Select * from Company_table where CompanyName='华泰证券' or Location<>'建邺区'", SS.getSqlSentence());
 	}
 	
 	@Test
@@ -46,6 +47,18 @@ public class SqlTest {
 		SS.putRequest(linkerXor);
 		CalculatorInequal calculatorInequal = new CalculatorInequal("Location", "建邺区");
 		SS.putRequest(calculatorInequal);
-		assertEquals("GenSql", "Select * from Company_table where CompanyName=华泰证券 xor Location<>建邺区", SS.getSqlSentence());
+		assertEquals("GenSql", "Select * from Company_table where CompanyName='华泰证券' xor Location<>'建邺区'", SS.getSqlSentence());
+	}
+	
+	@Test
+	public void testContains() {
+		SqlSentence SS = new SqlSentence();
+		CalculatorEqual calculatorEqual = new CalculatorEqual("CompanyName", "华泰证券");
+		SS.putRequest(calculatorEqual);
+		LinkerXor linkerXor = new LinkerXor();
+		SS.putRequest(linkerXor);
+		CalculatorContains calculatorContains = new CalculatorContains("Location", "建邺区");
+		SS.putRequest(calculatorContains);
+		assertEquals("GenSql", "Select * from Company_table where CompanyName='华泰证券' xor CONTAINS(Location,'建邺区')", SS.getSqlSentence());
 	}
 }

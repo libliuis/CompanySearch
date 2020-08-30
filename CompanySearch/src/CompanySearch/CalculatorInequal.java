@@ -6,6 +6,6 @@ public class CalculatorInequal extends Calculator{
 	}
 	
 	public String getSql() {
-		return this.a + "<>" + this.b;
+		return this.a + "<>" + "'" + this.b + "'";
 	}
 }

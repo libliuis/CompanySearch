@@ -7,6 +7,6 @@ public class CalculatorEqual extends Calculator{
 	
 	@Override
 	public String getSql() {
-		return this.a + "=" + this.b;
+		return this.a + "=" + "'" + this.b + "'";
 	}
 }
